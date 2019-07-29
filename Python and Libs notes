@@ -1,0 +1,128 @@
+###################
+
+---PYTHON NOTES---
+
+###################
+
+--- Useful Functions ---
+
+- input() -
+
+text = input( "Write your text here: ")
+
+- print() -
+
+
+--- ch.12 Lists ---
+
+- example_list = ["apple", "banana", 27, 3.14]
+
+- lists are mutable
+
+- List Methods:		<list>.<method>()
+	- append()
+	- extend()
+	- insert()	list1.insert( 2, "orange")
+ 	- remove()	list1.remove( "banana")
+	- pop()		list1.pop() // will remove the last element or provide an index num
+	- 
+
+
+--- NumPy --
+
+- import numpy as np
+
+- np.array()		data = np.array([1,2,3])
+
+- transpose a matrix arr.T
+
+- 
+
+
+--- Pandas ---
+
+- best way to read excel files
+
+- conda list 	// revise if it is already installed in the environment, if not, conda install pandas
+
+- import pandas as pd
+
+- 
+
+
+--- SKLearn ---
+
+- Define
+
+- Fit 
+
+- Predict
+
+- Evaluate
+
+	from sklearn.tree import DecisionTreeRegressor
+
+	melbourne_model = DecisionTreeRegressor(random_state=1)
+
+		
+
+	print('We are going to make predictions for the first 5 houses:')
+	print(melbourne_model.predict(X.head()))
+
+
+- Model Validation
+	
+	(error = actual - predicted)
+
+	from sklearn.metrics import mean_absolute_error
+
+	predicted_home_prices = melbourne_model.predict(X)
+	mean_absolute_error(y, predicted_home_prices)
+
+
+- Cross Validation	
+	
+	from sklearn.model_selection import train_test_split
+
+	train_X, val_X, train_y, val_y = train_test_split(X, y, random_state = 0)
+
+	melbourne_model.fit(train_X, train_y)
+
+	melbourne_model = DecisionTreeRegressor()
+
+	val_predictions = melbourne_model.predict(val_X)
+	print(mean_absolute_error(val_y, val_predictions))
+
+
+- Underfitting and Overfitting
+
+	from sklearn.metrics import mean_absolute_error
+	from sklearn.tree import DecisionTreeRegressor
+
+	def get_mae(max_leaf_nodes, train_X, val_X, train_y, val_y):
+    		model = DecisionTreeRegressor(max_leaf_nodes=max_leaf_nodes, random_state=0)
+    		model.fit(train_X, train_y)
+    		preds_val = model.predict(val_X)
+    		mae = mean_absolute_error(val_y, preds_val)
+    		return(mae)
+
+
+	# Compare MAE with different values of max_leaf_nodes
+
+	for max_leaf_nodes in [5, 50, 500, 5000]:
+    		my_mae = get_mae(max_leaf_nodes, train_X, val_X, train_y, val_y)
+    		print('Max leaf nodes: %d  \t\t Mean Absolute Error:  %d' %(max_leaf_nodes, my_mae))
+
+
+	scores = {leaf_size: get_mae(leaf_size, train_X, val_X, train_y, val_y) for leaf_size in candidate_max_leaf_nodes}
+	best_tree_size = min(scores, key=scores.get)
+
+
+	# Fill in argument to make optimal size and uncomment:
+
+	final_model = DecisionTreeRegressor(max_leaf_nodes=best_tree_size, random_state=1)
+
+	# fit the final model and uncomment the next two lines:
+
+	final_model.fit(X, y)
+	step_2.check()
